@@ -1,0 +1,64 @@
+# ============================================================================
+# EXERCISE 5: VIRTUAL INSTANCES, SERVER CONSOLIDATION, FAULT TOLERANCE
+# All steps below are performed in VMware Workstation and Ubuntu terminal.
+# PART 1 - VIRTUAL INSTANCES
+# 1. Open VMware Workstation Pro 17 and start the existing Ubuntu 24.04.1 LTS VM.
+# 2. Right-click the Ubuntu VM > Manage > Clone > Create a full clone.
+#    Create two or three additional VMs if resources permit.
+# 3. Power on each cloned VM and open Terminal in each one.
+# 4. On EACH web-server VM, run these commands:
+#    sudo apt update
+#    sudo apt install apache2 -y
+#    sudo systemctl enable --now apache2
+#    sudo systemctl status apache2
+# 5. To customize the web page on each VM:
+#    sudo nano /var/www/html/index.html
+#    Edit the HTML so each VM displays a distinct name, then save with Ctrl+O,
+#    press Enter, and exit with Ctrl+X.
+# 6. Find the VM's IP address with: hostname -I
+#    (The manual lists ifconfig; if unavailable, install net-tools or use hostname -I.)
+# 7. Test each Apache server from a browser: http://<VM_IP>
+#
+# PART 1 - TASK 2: HAPROXY LOAD BALANCER
+# 1. Use a separate Ubuntu VM as the load balancer (or use one VM if necessary).
+# 2. Install HAProxy:
+#    sudo apt update
+#    sudo apt install haproxy -y
+# 3. Back up and edit the configuration:
+#    sudo cp /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg.bak
+#    sudo nano /etc/haproxy/haproxy.cfg
+# 4. Add this frontend/backend configuration to the file (replace IP placeholders):
+#    frontend http_front
+#       bind *:80
+#       default_backend http_back
+#
+#    backend http_back
+#       balance roundrobin
+#       server vm1 <VM1_IP>:80 check
+#       server vm2 <VM2_IP>:80 check
+#       server vm3 <VM3_IP>:80 check
+# 5. Validate and restart HAProxy:
+#    sudo haproxy -c -f /etc/haproxy/haproxy.cfg
+#    sudo systemctl restart haproxy
+#    sudo systemctl enable haproxy
+#    sudo systemctl status haproxy
+# 6. Test in a browser at http://<LOAD_BALANCER_IP>.
+#    The manual's example URL is http://192.168.119.128; use your actual IP.
+#
+# PART 2 - SERVER CONSOLIDATION
+# 1. In VMware Workstation, review each VM's CPU, memory, and storage allocation.
+# 2. Identify low-usage/redundant VMs and choose a host with enough resources.
+# 3. Open VM > Edit virtual machine settings and adjust CPU and memory sensibly.
+# 4. Copy files/services to the consolidated VM and start/test those services there.
+# 5. After verifying migrated services, power off unused original VMs; remove them
+#    only if you are sure they are no longer needed.
+# 6. Check resource use in Ubuntu with: top
+#    Optional: install and use htop with: sudo apt install htop -y && htop
+#
+# PART 3 - FAULT TOLERANCE
+# 1. Clone a critical VM: VM > Manage > Clone > Full Clone.
+# 2. Synchronize data with rsync (replace paths, username, and backup IP):
+#    rsync -av /source_directory/ user@<BACKUP_VM_IP>:/destination_directory
+# 3. In VMware Workstation, select a critical VM > VM > Snapshot > Take Snapshot.
+#    Example name: Pre-Consolidation Snapshot. Take snapshots before major changes.
+# RESULT: VM instances, load balancing, consolidation, and recovery preparation.
