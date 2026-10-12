@@ -1,0 +1,39 @@
+# ============================================================================
+# EXERCISE 7: HYPERVISOR CLUSTERING IN A CLOUD ENVIRONMENT
+# This exercise is primarily GUI/configuration work, not a Python program.
+# PART 1 - SET UP HYPERVISOR HOSTS
+# 1. In VMware Workstation, select File > New Virtual Machine.
+# 2. Create two or more VMs for hypervisor hosts. Install Proxmox VE, VMware ESXi,
+#    or another compatible hypervisor on each, as supported by your machine.
+# 3. The manual suggests allocating e.g. 2 CPUs and 8 GB RAM to each host; ensure
+#    your physical computer has enough resources before allocating these amounts.
+# 4. Configure each hypervisor VM's network adapter as Bridged so the nodes can
+#    communicate on the same network (network requirements may vary by setup).
+# 5. Complete installation and configure IP addresses and root credentials.
+#
+# PART 1 - TASK 2: CONFIGURE THE CLUSTER
+# 1. In the first Proxmox web interface, navigate to Datacenter > Cluster > Create
+#    Cluster; note the cluster join information.
+# 2. On the second hypervisor, use the join option and provide the first node's
+#    cluster details. Follow the platform's instructions carefully.
+# 3. Confirm nodes are visible to one another and test connectivity:
+#    ping <OTHER_NODE_IP>
+#
+# PART 2 - HIGH AVAILABILITY AND LOAD BALANCING
+# 1. In the cluster management interface, open High Availability settings and
+#    select the VMs that should restart on another host if a host fails.
+# 2. Test only in a safe lab environment: shut down a host and verify the expected
+#    HA behavior. HA may require compatible storage, quorum, and network setup.
+# 3. Configure available resource distribution/load-balancing policies for CPU and
+#    memory. Monitor workload distribution in the hypervisor dashboard.
+#
+# PART 3 - MANAGE AND MIGRATE VMS
+# 1. Prepare shared storage and networking if required by the chosen platform.
+# 2. VMware Workstation does not support live migration by default. For a manual
+#    simulation, power off the VM, export it as an OVF template or copy its virtual
+#    disk files to the destination host.
+# 3. Import the VM on the destination hypervisor and start it.
+# 4. Verify the VM works and has the expected network connectivity.
+# RESULT: Hypervisor clustering and migration steps are outlined as in the manual.
+
+# ===================================================================
