@@ -1,0 +1,90 @@
+
+
+import socket
+import pickle
+
+#SERVER CODE
+
+class DataObject:
+    def __init__(self, name, values):
+        self.name = name
+        self.values = values
+
+HOST = "127.0.0.1"
+PORT = 5000
+
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+server.bind((HOST, PORT))
+server.listen(1)
+
+print("Server waiting for client...")
+
+try:
+    conn, addr = server.accept()
+
+    with conn:
+        print("Connected to:", addr)
+
+        data = conn.recv(4096)
+        obj = pickle.loads(data)
+
+        print("Object name:", obj.name)
+        print("Values received:", obj.values)
+
+        total = sum(obj.values)
+
+        response = {"name": obj.name, "sum": total}
+        conn.sendall(pickle.dumps(response))
+
+        print("Sum sent:", total)
+
+finally:
+    server.close()
+
+
+#CLIENT CODE
+
+import socket
+import pickle
+
+class DataObject:
+    def __init__(self, name, values):
+        self.name = name
+        self.values = values
+
+HOST = "127.0.0.1"
+PORT = 5000
+
+# Runtime input
+name = input("Enter object name: ")
+values = list(map(int, input("Enter numbers separated by spaces: ").split()))
+
+obj = DataObject(name, values)
+
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client:
+    client.connect((HOST, PORT))
+
+    # Serialize and send object
+    client.sendall(pickle.dumps(obj))
+
+    # Receive server response
+    data = client.recv(4096)
+
+    response = pickle.loads(data)
+
+    print("Object name:", response["name"])
+    print("Sum received from server:", response["sum"])
+
+
+
+
+######################################
+How to execute
+1. Save the first program as server.py.
+2. Save the second program as client.py.
+3. Open two terminals in the same folder.
+4. Run the server first:
+   python server.py
+5. Run the client in the second terminal:
+   python client.py
