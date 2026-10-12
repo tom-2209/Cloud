@@ -1,0 +1,28 @@
+Exercise 2: Google Cloud Console Basics
+Objective: Learn how to access Google Cloud Console, view and manage projects, modify IAM roles and permissions, and enable APIs and services.
+Task 1: Access the Google Cloud Console
+
+Procedure
+1. Open the Google Cloud Console.
+2. Sign in using your Google account.
+3. Accept the terms or complete any initial setup if prompted.
+4. Observe the navigation menu and project selector at the top.
+
+Expected result: The Google Cloud Console opens, allowing you to access projects and cloud services.
+Task 2: View projects in the Cloud Console
+
+Procedure
+1. Click the project selector at the top of the console.
+2. View the list of available projects.
+3. Select an existing project, or click New Project if you need to create one.
+4. To create a project, enter a project name and choose the organization or location if applicable.
+5. Click Create.
+Expected result: You can view existing projects and select or create a project.
+Task 3: Review and modify roles and permissions
+
+Procedure
+1. Open IAM & Admin.
+2. Select your project.
+3. View the list of principals (users or service accounts) and their assigned roles.
+4. Click Grant access to add a principal, enter their email address, and select a suitable role.
+5. To modify an existing role, click Edit principal, change the role, and click Save.
