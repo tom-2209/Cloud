@@ -1,0 +1,52 @@
+# ============================================================================
+# EXERCISE 6: TASK SCHEDULING AND LOAD BALANCING
+# PART 1 - TASK SCHEDULING WITH CRON
+# 1. Start the Ubuntu VM (the manual gives UbuntuSelcia as an example).
+# 2. Create the script:
+#    nano ~/script.sh
+# 3. Put the following content in script.sh:
+#    #!/bin/bash
+#    echo "Hello Selcia"
+# 4. Save (Ctrl+O, Enter, Ctrl+X) and make it executable:
+#    chmod +x ~/script.sh
+# 5. Open your crontab:
+#    crontab -e
+# 6. Add this line to run the script every minute and append output to a log:
+#    * * * * * /bin/bash /home/<YOUR_USERNAME>/script.sh >> /home/<YOUR_USERNAME>/output.log 2>&1
+#    Replace <YOUR_USERNAME> with the result of: whoami
+# 7. Check output:
+#    cat ~/output.log
+#    Check cron logs (the manual suggests): tail -f /var/log/syslog | grep CRON
+#
+# PART 2 - HAPROXY LOAD BALANCING
+# 1. Install: sudo apt update && sudo apt install haproxy -y
+# 2. Edit: sudo nano /etc/haproxy/haproxy.cfg
+# 3. Configure frontend/backend, replacing the IP placeholders:
+#    frontend http_front
+#       bind *:80
+#       default_backend http_back
+#
+#    backend http_back
+#       balance roundrobin
+#       server vm1 <VM1_IP>:80 check
+#       server vm2 <VM2_IP>:80 check
+#       server vm3 <VM3_IP>:80 check
+# 4. Validate/restart/enable/check:
+#    sudo haproxy -c -f /etc/haproxy/haproxy.cfg
+#    sudo systemctl restart haproxy
+#    sudo systemctl enable haproxy
+#    sudo systemctl status haproxy
+# 5. Browse to http://<LOAD_BALANCER_IP>. The manual example is
+#    http://192.168.119.128, but use the address of your own load-balancer VM.
+#
+# PART 3 - OPTIONAL ADVANCED SCHEDULING AND PRIORITIES
+# 1. Create two scripts with different workloads, e.g. script1.sh and script2.sh.
+# 2. Make each executable: chmod +x ~/script1.sh ~/script2.sh
+# 3. Open crontab: crontab -e
+# 4. Example jobs with different nice priorities (update paths/usernames):
+#    * * * * * /usr/bin/nice -n 10 /home/<YOUR_USERNAME>/script1.sh >> /home/<YOUR_USERNAME>/script1.log 2>&1
+#    * * * * * /usr/bin/nice -n 0 /home/<YOUR_USERNAME>/script2.sh >> /home/<YOUR_USERNAME>/script2.log 2>&1
+#    nice values range from -20 (higher priority) to 19 (lower priority).
+# RESULT: Cron automates jobs; HAProxy distributes HTTP requests.
+
+# ============================================================================
